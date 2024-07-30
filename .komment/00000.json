@@ -4,35 +4,35 @@
     "path": "source.js",
     "content": {
       "structured": {
-        "description": "A WebGL-based miner for cryptographic hashes, specifically designed for mining golden tickets in a proof-of-work system. It utilizes the OpenGL API and shaders to perform the hash calculations on the GPU, allowing for parallel processing of many nonce values at once. The `glminer` function orchestrates the mining process, iterating over nonces and checking for successful hashes against a target value.",
+        "description": "A WebGL-based miner for finding golden tickets in a cryptocurrency mining process. It creates a WebGL context and shaders for rendering pixels with hash values. The miner uses these shaders to iterate through possible nonce values, generating hashes and checking if they match a target value. If a match is found, the miner submits the corresponding golden ticket.",
         "items": [
           {
-            "id": "c4fd9b92-c4f8-e49f-2a4c-91b2922ab97d",
+            "id": "5e30438b-3c4d-088b-dd46-89ac11f76ac7",
             "ancestors": [],
-            "description": "Throws an error when a WebGL error occurs, providing detailed information about the error and the function that caused it. It takes three parameters: the error code, the name of the function, and any arguments passed to that function.",
+            "description": "Throws an error when a WebGL operation fails with a specific OpenGL error code. It takes three arguments: the error code, the name of the WebGL function that failed, and any additional arguments passed to that function.",
             "params": [
               {
                 "name": "err",
                 "optional": false,
                 "type_name": "GLenum",
-                "description": "Used to specify an OpenGL error code."
+                "description": "An error code returned by WebGL API calls."
               },
               {
                 "name": "funcName",
                 "optional": false,
                 "type_name": "string",
-                "description": "Used to identify the WebGL function causing the error."
+                "description": "Required to identify the WebGL function causing the error."
               },
               {
                 "name": "args",
                 "optional": false,
                 "type_name": "any[]",
-                "description": "Passed to the failed WebGL function call."
+                "description": "Used to log additional information about the error-causing function call."
               }
             ],
             "usage": {
               "language": "javascript",
-              "code": "try {\n    WebGLDebugUtils.throwOnGLError(gl.getParameter(gl.ERROR), \"getError\", []);\n} catch (e) {\n    // Handle error\n}\n",
+              "code": "try {\n    gl.getShaderInfoLog(someShader);\n} catch (err) {\n    throwOnGLError(err, \"getShaderInfoLog\", []);\n}\n",
               "description": ""
             },
             "name": "throwOnGLError",
@@ -48,21 +48,21 @@
             "docLength": null
           },
           {
-            "id": "0dd74c7e-148b-0387-2848-43a3ec44d7e6",
+            "id": "35fcd23f-275a-c584-6546-33eba018fb8f",
             "ancestors": [],
-            "description": "Initializes a WebGL context and sets up shaders for a program. It creates buffers and uniforms, binds them to the program, and sets their values using arrays of hash values and coefficients. The function prepares the WebGL environment for further processing.",
+            "description": "Initializes a WebGL context and sets up a shader program to render a graphical representation of cryptographic hash functions (e.g., SHA-256). It defines vertex attributes, uniforms, and buffers for rendering the graph.",
             "params": [
               {
                 "name": "threads",
                 "optional": false,
                 "type_name": "number",
-                "description": "Used to set the width of the canvas."
+                "description": "Used to set the width of the WebGL canvas."
               }
             ],
             "usage": {
               "language": "javascript",
-              "code": "meinWebGLStart(5);\n",
-              "description": "\nThis will create a canvas element and initialize WebGL with the specified number of threads (5)."
+              "code": "meinWebGLStart(1024);\n",
+              "description": ""
             },
             "name": "meinWebGLStart",
             "location": {
@@ -77,9 +77,9 @@
             "docLength": null
           },
           {
-            "id": "f267ca63-f1ea-0d9f-234c-4e5cc93f3b99",
+            "id": "0319bed7-d49d-2582-1645-a116c613555c",
             "ancestors": [],
-            "description": "Makes a GET request to the specified URL (`n`) using XMLHttpRequest, and when the request is complete, it calls the provided `callback` function with the response text as an argument.",
+            "description": "Retrieves a script file identified by the URL `n`, sends an asynchronous GET request, and upon successful completion, invokes the provided `callback` function with the response text as its argument.",
             "params": [
               {
                 "name": "n",
@@ -91,12 +91,12 @@
                 "name": "callback",
                 "optional": false,
                 "type_name": "any",
-                "description": "Invoked with the response text after the script has been read."
+                "description": "Invoked with the response text when request is complete."
               }
             ],
             "usage": {
               "language": "javascript",
-              "code": "readScript('script.js', function(text) {\n    eval(text);\n});\n",
+              "code": "readScript('script.js', function(data) {\n    eval(data);\n});\n",
               "description": ""
             },
             "name": "readScript",
@@ -112,14 +112,14 @@
             "docLength": null
           },
           {
-            "id": "8a516678-0fdf-e8b4-0547-2d7c81b9134d",
+            "id": "b2a16051-04ba-24ad-2041-62f95c6b6099",
             "ancestors": [],
-            "description": "Reads two scripts, 'shader-vs.js' and 'shader-fs.js', and assigns their contents to variables `vShaderQuellcode` and `fShaderQuellcode`, respectively. These scripts likely contain vertex and fragment shader code for a graphics application.",
+            "description": "Reads and retrieves script contents from 'shader-vs.js' and 'shader-fs.js' files, assigning the results to `vShaderQuellcode` and `fShaderQuellcode` variables respectively, using callback functions for asynchronous execution.",
             "params": [],
             "usage": {
               "language": "javascript",
-              "code": "onl();\nwebGL.init(vShaderQuellcode, fShaderQuellcode);\n",
-              "description": "\n\nNote: The example code assumes that there is a webGL module with `init` method."
+              "code": "onl();\n",
+              "description": ""
             },
             "name": "onl",
             "location": {
@@ -134,11 +134,11 @@
             "docLength": null
           },
           {
-            "id": "cdde9197-215c-c0bd-7343-f4e6eac8242b",
+            "id": "24ffd508-6776-b89c-904a-067a25787000",
             "ancestors": [
-              "8a516678-0fdf-e8b4-0547-2d7c81b9134d"
+              "b2a16051-04ba-24ad-2041-62f95c6b6099"
             ],
-            "description": "Reads and assigns.",
+            "description": "Reads and assigns shader source code.",
             "name": null,
             "location": {
               "start": 142,
@@ -152,11 +152,11 @@
             "docLength": null
           },
           {
-            "id": "1c76bb40-d175-eabb-ba42-891cbfa0a8ab",
+            "id": "e4b65669-d35e-398d-ae41-dc00e0bcecae",
             "ancestors": [
-              "8a516678-0fdf-e8b4-0547-2d7c81b9134d"
+              "b2a16051-04ba-24ad-2041-62f95c6b6099"
             ],
-            "description": "Reads a file and sets its content to variable.",
+            "description": "Reads a file and assigns its content to a variable.",
             "name": null,
             "location": {
               "start": 146,
@@ -170,30 +170,30 @@
             "docLength": null
           },
           {
-            "id": "b9c1fdf8-1e38-f688-ee4a-0e056aa10bf7",
+            "id": "560a372c-ec81-85b7-a34b-5c59d0448796",
             "ancestors": [],
-            "description": "Mines for gold in a canvas using WebGL and JavaScript. It submits nonces to a callback function after checking if they are golden hashes within a specified target range. The mining process continues until a maximum nonce value is reached or an event triggers a forced quit.",
+            "description": "Mines for a golden hash by repeatedly rendering a triangle strip and reading pixel data from the canvas. It checks each pixel's color against a target hash and submits any matching nonce to the callback function, repeating until a maximum nonce value is reached or an external signal to stop is received.",
             "params": [
               {
                 "name": "job",
                 "optional": false,
                 "type_name": "object",
-                "description": "Used for mining cryptocurrency."
+                "description": "Used to manage hash mining operations."
               },
               {
                 "name": "callback",
                 "optional": false,
-                "type_name": "(job: object, error?: any) => void",
-                "description": "Used to notify about job completion or errors."
+                "type_name": "(job: object) => void",
+                "description": "Used to notify the main thread when a solution is found."
               }
             ],
             "returns": {
               "type_name": "Function",
-              "description": "The result of calling the `mine` function with the provided job and callback parameters."
+              "description": "`mine(job, callback)`. This returned function is used to initiate the mining process and start processing jobs."
             },
             "usage": {
               "language": "javascript",
-              "code": "glminer({\n    t: new Date().getTime(),\n    half: [...],\n    data: [...],\n    target: [...]\n}, function(job) {\n    // process job\n});\n",
+              "code": "glminer({\n    t: 0,\n    target: [1,2,3,4],\n    midstate: [5,6,7,8],\n    hash1: [9,10,11,12],\n    data: [13,14,15,16]\n}, function(job) {\n    // callback function\n});\n",
               "description": ""
             },
             "name": "glminer",
@@ -209,28 +209,28 @@
             "docLength": null
           },
           {
-            "id": "9289a7c1-61d1-71a7-d54b-7a359a53ae4d",
+            "id": "4e54b8fa-2715-d8b6-aa4f-c53d4994302d",
             "ancestors": [
-              "b9c1fdf8-1e38-f688-ee4a-0e056aa10bf7"
+              "560a372c-ec81-85b7-a34b-5c59d0448796"
             ],
-            "description": "Mines for a cryptocurrency by rendering pixels and checking their colors to find valid hashes. It submits found nonces to a callback, reports total hashes periodically, and handles timeouts to prevent starvation.",
+            "description": "Runs a job to mine for golden tickets using WebGL and GPU acceleration. It processes pixels, extracts nonces, submits successful ones to the callback, and reports progress at regular intervals or when a timeout occurs.",
             "params": [
               {
                 "name": "job",
                 "optional": false,
                 "type_name": "object",
-                "description": "Used to store data related to the current mining operation."
+                "description": "Used to control the mining process."
               },
               {
                 "name": "callback",
                 "optional": false,
-                "type_name": "(job: object) => void",
-                "description": "Used to submit job results."
+                "type_name": "Function",
+                "description": "Called with the updated job object."
               }
             ],
             "usage": {
               "language": "javascript",
-              "code": "var job = {\n    \"half\": [0, 1],\n    \"data\": [2, 3]\n};\n\nnext_run(job, function(result) {\n    // result processing code here\n});\n",
+              "code": "var job = {\n    t: 0,\n    nonce: 0,\n    data: [],\n    half: []\n};\nnext_run(job, function(result) {\n    // result processing\n});\n",
               "description": ""
             },
             "name": "next_run",
@@ -246,16 +246,16 @@
             "docLength": null
           },
           {
-            "id": "192bdc62-b3e0-afa8-1d40-eb2ffe33122b",
+            "id": "ab5198b5-bd52-dbb3-f343-41704c1d2d93",
             "ancestors": [
-              "b9c1fdf8-1e38-f688-ee4a-0e056aa10bf7",
-              "9289a7c1-61d1-71a7-d54b-7a359a53ae4d"
+              "560a372c-ec81-85b7-a34b-5c59d0448796",
+              "4e54b8fa-2715-d8b6-aa4f-c53d4994302d"
             ],
-            "description": "Processes a mining job by converting its nonce to a uint16 array, updating job data accordingly, concatenating job half and data arrays, encoding the result into a pool string using `toPoolString` method, and then assigning the result as the golden ticket before calling a callback with the updated job.",
+            "description": "Transforms a `job` object by converting its nonce into uint16 array, updating job data, and combining it with half and data arrays to form a new pool string. The resulting golden ticket is assigned to the job and passed to a callback function.",
             "params": [],
             "usage": {
               "language": "javascript",
-              "code": "var job = {nonce: 12345, data: [], half: []};\nsubmit_nonce(job, function(job) {\n    // process golden ticket\n});",
+              "code": "submit_nonce(job, callback);\n",
               "description": ""
             },
             "name": "submit_nonce",
@@ -271,16 +271,16 @@
             "docLength": null
           },
           {
-            "id": "c26a62e3-7e55-6cb8-d148-ca68bf0e7f4d",
+            "id": "23e51a8e-ec99-1d91-e44d-2ea44022f02c",
             "ancestors": [
-              "b9c1fdf8-1e38-f688-ee4a-0e056aa10bf7",
-              "9289a7c1-61d1-71a7-d54b-7a359a53ae4d"
+              "560a372c-ec81-85b7-a34b-5c59d0448796",
+              "4e54b8fa-2715-d8b6-aa4f-c53d4994302d"
             ],
-            "description": "Calls the `next_run` function with two arguments: `job` and `callback`. This likely schedules a job for execution and registers a callback to handle its outcome. The result is passed back to the caller through the callback, allowing asynchronous processing of tasks.",
+            "description": "Defines a closure that wraps the `next_run` function with two parameters: `job` and `callback`. This function is intended to be executed at a later time, perhaps within an asynchronous context, and will invoke `next_run` with the provided arguments once it is called.",
             "params": [],
             "usage": {
               "language": "javascript",
-              "code": "var job = 'do something';\nc(job, function(data) {\n    // process data\n});\n",
+              "code": "c(job1, callback);\n",
               "description": ""
             },
             "name": "c",
@@ -296,22 +296,22 @@
             "docLength": null
           },
           {
-            "id": "e286af05-9c22-1cb5-1049-e07e8a4a8107",
+            "id": "9171ae41-1240-a494-394f-973c2771bc1a",
             "ancestors": [
-              "b9c1fdf8-1e38-f688-ee4a-0e056aa10bf7"
+              "560a372c-ec81-85b7-a34b-5c59d0448796"
             ],
-            "description": "Checks if a message event contains data and a property called 'run'. If either condition is false, it sets a variable `run` to false and logs a message indicating forced quit.",
+            "description": "Checks if an event object contains valid data and a property called \"run\". If not, it sets a global variable \"run\" to false and logs a message to the console indicating a forced quit. It then terminates its execution.",
             "params": [
               {
                 "name": "event",
                 "optional": false,
-                "type_name": "object",
-                "description": "Used to receive data from an external source."
+                "type_name": "Event",
+                "description": "Likely an event sent from a worker to the main thread."
               }
             ],
             "usage": {
               "language": "javascript",
-              "code": "var event = {data: {run: true}};\nintMessage(event);\n",
+              "code": "var worker = new Worker('worker.js');\nworker.onmessage = intMessage;\nworker.postMessage({data: {run: true}});\n",
               "description": ""
             },
             "name": "intMessage",
@@ -327,33 +327,33 @@
             "docLength": null
           },
           {
-            "id": "d4794686-34ea-aaa1-6e4f-4b504834e49b",
+            "id": "25b70399-4fb1-6ca2-0c49-b51c0bce55f8",
             "ancestors": [
-              "b9c1fdf8-1e38-f688-ee4a-0e056aa10bf7"
+              "560a372c-ec81-85b7-a34b-5c59d0448796"
             ],
-            "description": "Sets uniform variables for a WebGL context with provided data and then initiates a mining process using the `next_run` function, passing the job object and callback as arguments. The result is returned as an integer message.",
+            "description": "Updates uniform variables with job data and initializes a buffer for rendering. It then calls the `next_run` function with the job and callback, returning an integer message while performing these tasks.",
             "params": [
               {
                 "name": "job",
                 "optional": false,
                 "type_name": "object",
-                "description": "Used to set uniform values for WebGL."
+                "description": "Used to specify input data for mining."
               },
               {
                 "name": "callback",
                 "optional": false,
                 "type_name": "Function",
-                "description": "Invoked after completing the mining operation."
+                "description": "Called after the execution of `next_run(job, callback)`."
               }
             ],
             "returns": {
               "type_name": "object",
-              "description": "Referred to as `intMessage`."
+              "description": "Named `intMessage`."
             },
             "usage": {
               "language": "javascript",
-              "code": "mine({data: [1,2], hash1: [3,4], midstate: [5,6], target: [7,8]}, function(result) {\n    processResult(result);\n})\n",
-              "description": "\nPasses."
+              "code": "mine({data: [1,2], hash1: [3,4], midstate: [5,6], target: [7,8]}, function(result) {\n    // Process result here\n});\n",
+              "description": ""
             },
             "name": "mine",
             "location": {
@@ -368,32 +368,32 @@
             "docLength": null
           },
           {
-            "id": "4254da4e-f62a-e9b8-9940-f46a1de72c79",
+            "id": "61d2b180-0069-d3b1-5c4c-348e5c546e02",
             "ancestors": [
-              "b9c1fdf8-1e38-f688-ee4a-0e056aa10bf7"
+              "560a372c-ec81-85b7-a34b-5c59d0448796"
             ],
-            "description": "Checks whether a given hash value is within the target range for a golden hash. It converts both values to unsigned integers, logs a message with their comparison result, and returns true if the hash value is less than or equal to the target value.",
+            "description": "Compares two unsigned integers, `hash` and a portion of `target`, and returns `true` if `hash` is less than or equal to that portion, indicating a successful hash comparison for a cryptographic task.",
             "params": [
               {
                 "name": "hash",
                 "optional": false,
                 "type_name": "string",
-                "description": "32 bytes long."
+                "description": "32-byte hash value."
               },
               {
                 "name": "target",
                 "optional": false,
-                "type_name": "(number|string)[]",
-                "description": "8 bytes long."
+                "type_name": "number[]",
+                "description": "8 bytes long, used to compare hash values."
               }
             ],
             "returns": {
               "type_name": "boolean",
-              "description": "True if the condition `u1 <= u2` is satisfied and false otherwise."
+              "description": "True if the condition `u1 <= u2` holds and false otherwise."
             },
             "usage": {
               "language": "javascript",
-              "code": "var hash = '0x1234567890abcdef';\nvar target = '0x876543210fedcba9';\n\nif (is_golden_hash(hash, target)) {\n    alert('Hash is golden');\n} else {\n    alert('Hash is not golden');\n}\n",
+              "code": "var hash = '...'; \nvar target = ['...'][6];\nif (is_golden_hash(hash, target)) {\n    // The code within this block will execute if u1 is less than or equal to u2.",
               "description": ""
             },
             "name": "is_golden_hash",

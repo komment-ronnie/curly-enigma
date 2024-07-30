@@ -21,27 +21,27 @@ var width;
 var height;
 
 /**
- * @description Throws an error when a WebGL error occurs, providing detailed information
- * about the error and the function that caused it. It takes three parameters: the
- * error code, the name of the function, and any arguments passed to that function.
+ * @description Throws an error when a WebGL operation fails with a specific OpenGL
+ * error code. It takes three arguments: the error code, the name of the WebGL function
+ * that failed, and any additional arguments passed to that function.
  *
- * @param {GLenum} err - Used to specify an OpenGL error code.
+ * @param {GLenum} err - An error code returned by WebGL API calls.
  *
- * @param {string} funcName - Used to identify the WebGL function causing the error.
+ * @param {string} funcName - Required to identify the WebGL function causing the error.
  *
- * @param {any[]} args - Passed to the failed WebGL function call.
+ * @param {any[]} args - Used to log additional information about the error-causing
+ * function call.
  */
 function throwOnGLError(err, funcName, args) {
     throw WebGLDebugUtils.glEnumToString(err) + " was caused by call to" + funcName;
 };
 
 /**
- * @description Initializes a WebGL context and sets up shaders for a program. It
- * creates buffers and uniforms, binds them to the program, and sets their values
- * using arrays of hash values and coefficients. The function prepares the WebGL
- * environment for further processing.
+ * @description Initializes a WebGL context and sets up a shader program to render a
+ * graphical representation of cryptographic hash functions (e.g., SHA-256). It defines
+ * vertex attributes, uniforms, and buffers for rendering the graph.
  *
- * @param {number} threads - Used to set the width of the canvas.
+ * @param {number} threads - Used to set the width of the WebGL canvas.
  */
 function meinWebGLStart(threads) {
         canvas = document.createElement('canvas');
@@ -148,14 +148,13 @@ function meinWebGLStart(threads) {
 }
 
 /**
- * @description Makes a GET request to the specified URL (`n`) using XMLHttpRequest,
- * and when the request is complete, it calls the provided `callback` function with
- * the response text as an argument.
+ * @description Retrieves a script file identified by the URL `n`, sends an asynchronous
+ * GET request, and upon successful completion, invokes the provided `callback`
+ * function with the response text as its argument.
  *
  * @param {string} n - URL of the script to be read.
  *
- * @param {any} callback - Invoked with the response text after the script has been
- * read.
+ * @param {any} callback - Invoked with the response text when request is complete.
  */
 function readScript(n, callback) {
     var xhr = new XMLHttpRequest();
@@ -168,49 +167,49 @@ function readScript(n, callback) {
 };
 
 /**
- * @description Reads two scripts, 'shader-vs.js' and 'shader-fs.js', and assigns
- * their contents to variables `vShaderQuellcode` and `fShaderQuellcode`, respectively.
- * These scripts likely contain vertex and fragment shader code for a graphics application.
+ * @description Reads and retrieves script contents from 'shader-vs.js' and 'shader-fs.js'
+ * files, assigning the results to `vShaderQuellcode` and `fShaderQuellcode` variables
+ * respectively, using callback functions for asynchronous execution.
  */
 function onl() {
     readScript('shader-vs.js', function (data) {
-        // Reads and assigns.
+        // Reads and assigns shader source code.
 
         vShaderQuellcode = data;
     });
 
     readScript('shader-fs.js', function (data) {
-        // Reads a file and sets its content to variable.
+        // Reads a file and assigns its content to a variable.
 
         fShaderQuellcode = data;
     });
 };
 
 /**
- * @description Mines for gold in a canvas using WebGL and JavaScript. It submits
- * nonces to a callback function after checking if they are golden hashes within a
- * specified target range. The mining process continues until a maximum nonce value
- * is reached or an event triggers a forced quit.
+ * @description Mines for a golden hash by repeatedly rendering a triangle strip and
+ * reading pixel data from the canvas. It checks each pixel's color against a target
+ * hash and submits any matching nonce to the callback function, repeating until a
+ * maximum nonce value is reached or an external signal to stop is received.
  *
- * @param {object} job - Used for mining cryptocurrency.
+ * @param {object} job - Used to manage hash mining operations.
  *
- * @param {(job: object, error?: any) => void} callback - Used to notify about job
- * completion or errors.
+ * @param {(job: object) => void} callback - Used to notify the main thread when a
+ * solution is found.
  *
- * @returns {Function} The result of calling the `mine` function with the provided
- * job and callback parameters.
+ * @returns {Function} `mine(job, callback)`. This returned function is used to
+ * initiate the mining process and start processing jobs.
  */
 function glminer(job, callback) {
     var run = true;
 
     /**
-     * @description Mines for a cryptocurrency by rendering pixels and checking their
-     * colors to find valid hashes. It submits found nonces to a callback, reports total
-     * hashes periodically, and handles timeouts to prevent starvation.
+     * @description Runs a job to mine for golden tickets using WebGL and GPU acceleration.
+     * It processes pixels, extracts nonces, submits successful ones to the callback, and
+     * reports progress at regular intervals or when a timeout occurs.
      *
-     * @param {object} job - Used to store data related to the current mining operation.
+     * @param {object} job - Used to control the mining process.
      *
-     * @param {(job: object) => void} callback - Used to submit job results.
+     * @param {Function} callback - Called with the updated job object.
      */
     var next_run = function(job, callback) {
         var nonces_per_pixel = 1;
@@ -223,10 +222,10 @@ function glminer(job, callback) {
         var n;
 
         /**
-         * @description Processes a mining job by converting its nonce to a uint16 array,
-         * updating job data accordingly, concatenating job half and data arrays, encoding
-         * the result into a pool string using `toPoolString` method, and then assigning the
-         * result as the golden ticket before calling a callback with the updated job.
+         * @description Transforms a `job` object by converting its nonce into uint16 array,
+         * updating job data, and combining it with half and data arrays to form a new pool
+         * string. The resulting golden ticket is assigned to the job and passed to a callback
+         * function.
          */
         var submit_nonce = function() {
             n = derMiner.Util.to_uint16_array(job.nonce);
@@ -314,10 +313,10 @@ function glminer(job, callback) {
                 job.nonce = nonce;
                 job.t = t;
                 /**
-                 * @description Calls the `next_run` function with two arguments: `job` and `callback`.
-                 * This likely schedules a job for execution and registers a callback to handle its
-                 * outcome. The result is passed back to the caller through the callback, allowing
-                 * asynchronous processing of tasks.
+                 * @description Defines a closure that wraps the `next_run` function with two parameters:
+                 * `job` and `callback`. This function is intended to be executed at a later time,
+                 * perhaps within an asynchronous context, and will invoke `next_run` with the provided
+                 * arguments once it is called.
                  */
                 var c = function() {
                     next_run(job, callback);
@@ -328,11 +327,11 @@ function glminer(job, callback) {
         }
     }
     /**
-     * @description Checks if a message event contains data and a property called 'run'.
-     * If either condition is false, it sets a variable `run` to false and logs a message
-     * indicating forced quit.
+     * @description Checks if an event object contains valid data and a property called
+     * "run". If not, it sets a global variable "run" to false and logs a message to the
+     * console indicating a forced quit. It then terminates its execution.
      *
-     * @param {object} event - Used to receive data from an external source.
+     * @param {Event} event - Likely an event sent from a worker to the main thread.
      */
     var intMessage = function(event) {
         if (!event.data || !event.data.run) {
@@ -343,15 +342,15 @@ function glminer(job, callback) {
     };
 
     /**
-     * @description Sets uniform variables for a WebGL context with provided data and
-     * then initiates a mining process using the `next_run` function, passing the job
-     * object and callback as arguments. The result is returned as an integer message.
+     * @description Updates uniform variables with job data and initializes a buffer for
+     * rendering. It then calls the `next_run` function with the job and callback, returning
+     * an integer message while performing these tasks.
      *
-     * @param {object} job - Used to set uniform values for WebGL.
+     * @param {object} job - Used to specify input data for mining.
      *
-     * @param {Function} callback - Invoked after completing the mining operation.
+     * @param {Function} callback - Called after the execution of `next_run(job, callback)`.
      *
-     * @returns {object} Referred to as `intMessage`.
+     * @returns {object} Named `intMessage`.
      */
     var mine = function(job, callback) {
 
@@ -370,16 +369,15 @@ function glminer(job, callback) {
     }
 
     /**
-     * @description Checks whether a given hash value is within the target range for a
-     * golden hash. It converts both values to unsigned integers, logs a message with
-     * their comparison result, and returns true if the hash value is less than or equal
-     * to the target value.
+     * @description Compares two unsigned integers, `hash` and a portion of `target`, and
+     * returns `true` if `hash` is less than or equal to that portion, indicating a
+     * successful hash comparison for a cryptographic task.
      *
-     * @param {string} hash - 32 bytes long.
+     * @param {string} hash - 32-byte hash value.
      *
-     * @param {(number|string)[]} target - 8 bytes long.
+     * @param {number[]} target - 8 bytes long, used to compare hash values.
      *
-     * @returns {boolean} True if the condition `u1 <= u2` is satisfied and false otherwise.
+     * @returns {boolean} True if the condition `u1 <= u2` holds and false otherwise.
      */
     var is_golden_hash = function(hash, target) {
         var u1 = derMiner.Util.ToUInt32(hash);
